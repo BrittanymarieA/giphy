@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <title>GIPHY</title>
 </head>
@@ -14,98 +16,19 @@
 <body>
     <div class="container">
         <div id="button-view">
+            <div class="form">
+                <h1>Giphy Search</h1>
+                <form id="giphy-form">
+                    <label for="giphy-input">Search for a giphy</label>
+                    <input type="text" id="giphy-input">
+                    <br>
+                    <input id="add-giphy" type="submit" value="giphy Search">
+                </form>
+                <div id="giphy-form"></div>
+                <div id="giphy-view"></div>
+            </div>
         </div>
-        <div id="giphy-view">
-        </div>
-        <div class="form">
-            <h1>Giphy Search</h1>
-            <form id="giphy-form">
-                <label for="giphy-input">Search for a giphy</label>
-                <input type="text" id="giphy-input">
-                <br>
-                <input id="find-giphy" type="submit" value="giphy Search">
-            </form>
-            <div id="giphy-view"></div>
-        </div>
-    </div>
-    <script>
-
-        //create loop that appends array of topics into buttons
-
-        buttons()
-
-        function buttons() {
-
-            var topics = [
-                "Ironman", "Black Panther", "Black Widow", "Captain America"
-            ]
-            for (var i = 0; i < topics.length; i++) {
-
-                var topicsBtn = $("<button>" + topics[i] + "</button>");
-
-                topicsBtn.attr("data-characters")
-
-                topicsBtn.prependTo("#button-view");
-
-
-
-
-                //ajax call to retrieve giphy's when buttons are clicked 
-
-                $("buttons").on("click", function (buttons) {
-                    var heros = $(this).attr("data-characters")
-
-                    var herosURL = "https://api.giphy.com/v1/gifs/search?q=" + heros + "&api_key=tXoS3y8r6IYVSzWFhGpelQGM06REAOAz&limit=10";
-
-                    $.ajax({
-                        url: herosURL,
-                        method: "GET"
-                    }).then(function (response) {
-                        console.log(respnose);
-
-                        var results = response.data;
-                        var giphyDiv = $("<div>");
-                        var p = $("<p>").text("rating" + results[i].rating);
-                        var giphyImage = $("<img>");
-                        giphyImage.attr("src", results[i].images.fixed_height.URL);
-
-                        // pause/play functionality
-                        $("buttons").on("click", function () {
-                            var state = $(this).attr("src", results[i].images.data - state);
-                            var still = giphyImage.attr("src", results[i].images.data - state.data - still);
-
-                            if (state === "still") {
-                                $(this).attr("src", results[i].images.data - state.data - animate);
-                            } else {
-                                $(this).attr("src", results[i].images.data - state.data - still);
-                            }
-                        });
-                        giphyDiv.append(p);
-                        giphyDiv.append(giphyImage);
-                        $("#giphy-view").prepend(giphyDiv);
-                    })
-                })
-            }
-        };
-        
-        $("#find-giphy").on("click", function(event){
-            event.preventDefault();
-
-            var giphy = $("#giphy-input").val();
-
-             var giphyURL = "https://api.giphy.com/v1/gifs/search?q=" + giphy + "&api_key=tXoS3y8r6IYVSzWFhGpelQGM06REAOAz&limit=10";
-
-            $.ajax({
-                url: giphyURL,
-                method: "GET"
-            }).then(function(respnose){
-                $("#giphy-view").text(JSON.stringify(response));
-            });
-        })
-
-    </script>
+       
 </body>
-
-
-
+<script src="assets/js/app.js"></script>
 </html>

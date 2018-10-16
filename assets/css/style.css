@@ -1,0 +1,22 @@
+body{margin-top: 20px;
+    text-align: center;
+    width: 100%;
+background-image: url("http://experienceperception.com/images/12_wm_00000.jpg?crc=437393608");
+background-size: 100%;
+line-height: 25px;
+font-size: 18px;
+}
+
+button {
+background-color: aliceblue;
+color: darkred;
+font-size: 20px;
+font-weight: 900;
+}
+
+.container{
+    color: aliceblue;
+    background-color: darkred;
+    padding: 20px;
+
+}
