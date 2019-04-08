@@ -1,92 +1,144 @@
 
-            //create loop that appends array of topics into buttons
+//create loop that appends array of topics into buttons
 
-            buttons()
+buttons();
 
-            function buttons() {
+function buttons() {
 
-                var topics = [
-                    "Ironman", "Black Panther", "Black Widow", "Captain America", "Starlord", "Thor"
-                ]
-                for (var i = 0; i < topics.length; i++) {
+    var topics = [
+        "Ironman", "Black Panther", "Black Widow", "Captain America", "Starlord", "Thor"
+    ]
+    for (var i = 0; i < topics.length; i++) {
 
-                    var topicsBtn = $("<button>" + topics[i] + "</button>");
+        var topicsBtn = $("<button>" + topics[i] + "</button>");
 
-                    topicsBtn.attr("data-character", topics[i]);
+        topicsBtn.attr("data", topics[i]);
 
-                    topicsBtn.prependTo("#button-view");
+        topicsBtn.prependTo("#button-view");
 
-                };
-
-                //adding giphy buttons
-                $("#add-giphy").on("click", function (event) {
-                    form().reset
-                    event.preventDefault();
-
-                    var giph = $("#giphy-input").val().trim();
-
-                    topics.push(giph);
-
-                    buttons()
-
-                    return;
-                })
+    };
 
 
 
-                //ajax call to retrieve giphy's when buttons are clicked 
+    //ajax call to retrieve giphy's when buttons are clicked 
 
-                $("button").on("click", function (buttons) {
+    $("button").on("click", function (_buttons) {
 
-                    var heros = $(this).attr("data-character")
+        var heros = $(this).attr("data");
 
-                    var herosURL = "https://api.giphy.com/v1/gifs/search?q=" + heros + "&api_key=tXoS3y8r6IYVSzWFhGpelQGM06REAOAz&limit=10";
+        var herosURL = "https://api.giphy.com/v1/gifs/search?q=" + heros + "&api_key=tXoS3y8r6IYVSzWFhGpelQGM06REAOAz&limit=10";
 
-                    $.ajax({
-                        url: herosURL,
-                        method: "GET"
-                    }).then(function (response) {
-                        console.log(response);
+        $.ajax({
+            url: herosURL,
+            method: "GET"
+        })
+            .then(function (response) {
+                console.log(response);
 
-                        var results = response.data;
+                var results = response.data;
 
-                        for (var i = 0; i < results.length; i++) {
-                            var giphyDiv = $("<div>");
+                for (var i = 0; i < results.length; i++) {
+                    var giphyDiv = $("<div>");
 
-                            var p = $("<p>").text("Rating" + results[i].rating);
+                    var p = $("<p>").text("Rating" + results[i].rating);
 
-                            var giphyImage = $("<img>");
+                    var giphyImage = $("<img>");
 
-                            giphyImage.attr("src", results[i].images.fixed_height_still.url);
+                    var animated = results[i].images.fixed_height.url;
+                    var still = results[i].images.fixed_height_still.url;
 
-                            giphyImage.attr("data-state", "still");
+                    giphyImage.attr("src", still);
 
-                            giphyImage.attr("data-animate", results[i].images.fixed_height.url);
+                    giphyImage.attr("data-still", still);
 
-                            giphyImage.attr("class", "image");
+                    giphyImage.attr("data-animate", animated);
 
-                            giphyDiv.append(p);
+                    giphyImage.attr("data-state", "still");
 
-                            giphyDiv.append(giphyImage);
+                    giphyImage.attr("class", "image");
 
-                            $("#giphy-view").prepend(giphyDiv);
+                    giphyImage.addClass("image");
 
-                        }
-                    })
-                })
-            };
+                    giphyDiv.append(p);
 
-            //play/pause function
-            $(".image").on("click", function () {
-                var state = $(this).attr("data-state");
-                var animate = $(this).attr("data-animate");
-                var still = $(this).attr("data-still");
+                    giphyDiv.append(giphyImage);
 
-                if (state === "still") {
-                    $(this).attr("src", animate);
-                    $(this).attr("data-state", "animate");
-                } else {
-                    $(this).attr("src", still);
-                    $(this).attr("data-state", "still")
+                    $("#giphy-view").prepend(giphyDiv);
                 }
             });
+    });
+
+      
+    //giphy search bar
+    $("#add-giphy").on("click", function (event) {
+        event.preventDefault();
+        
+        var input = $("#giphy-input").val();
+        
+        var inputURL = "https://api.giphy.com/v1/gifs/search?q=" + input + "&api_key=tXoS3y8r6IYVSzWFhGpelQGM06REAOAz&limit=10";
+        
+        $.ajax({
+            url: inputURL,
+            method: "GET"
+        }).then(function (response) {
+            
+            console.log(response);
+            
+            var results = response.data;
+            
+            for (var i = 0; i < results.length; i++) {
+                var giphyDiv = $("<div>");
+                
+                var p = $("<p>").text("Rating" + results[i].rating);
+                
+                var giphyImage = $("<img>");
+                
+                var animated = results[i].images.fixed_height.url;
+                var still = results[i].images.fixed_height_still.url;
+                
+                giphyImage.attr("src", still);
+                
+                giphyImage.attr("data-still", still);
+                
+                giphyImage.attr("data-animate", animated);
+                
+                giphyImage.attr("data-state", "still");
+                
+                giphyImage.attr("class", "image");
+                
+                giphyImage.addClass("image");
+                
+                giphyDiv.append(p);
+                
+                giphyDiv.append(giphyImage);
+                
+                $("#giphy-view").prepend(giphyDiv);
+            }
+            
+        });
+    });
+    
+    
+    //play/pause function
+
+    $(document).on("click", ".image", function () {
+
+        var state = $(this).attr("data-state");
+
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        }
+        else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+    });
+};
+    
+    
+    
+    
+    
+    
+    
